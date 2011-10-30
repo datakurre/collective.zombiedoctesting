@@ -1,0 +1,7 @@
+syntax: glob
+dist
+*.egg-info
+*.pyc
+*.mo
+.sass-cache
+.DS_Store
