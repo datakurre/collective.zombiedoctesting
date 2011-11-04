@@ -18,7 +18,7 @@ Requirements
 - a UNIX like environment
 - Node.js_ must be installed
 - npm_ must be installed
-- ``coffeescript``, ``zombie`` and ``async`` packages must be installed using
+- ``coffee-script``, ``zombie`` and ``async`` packages must be installed using
   npm
 - ``coffee``-executable must be found on the path
 
