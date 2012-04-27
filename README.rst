@@ -5,8 +5,9 @@ Zombie.js_ is a fast headless browser with all the JavaScript support Node.js_
 provides. This package provides a function decorator, which allows Python
 doctest-style functional JavaScript testing using Python-like CoffeeScript.
 
-**Disclaimer:** This won't replace your existing Selenium-stack, because
-Zombie.js is just an another browser with its own quirks.
+**Disclaimer:** This is mostly an experiment. This wouldn't ever replace your
+existing Selenium-stack, because Zombie.js, even when it works, is just an
+another browser with its own quirks.
 
 .. _Zombie.js: http://zombie.labnotes.org/
 .. _Node.js: http://nodejs.org/

@@ -5,4 +5,4 @@ Changelog
 1.1.0 – 2011-10-30
 ------------------
 
-- First non-broken release.
+- First (hopefully) non-broken release.
