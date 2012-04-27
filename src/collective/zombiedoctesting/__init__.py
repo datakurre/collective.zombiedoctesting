@@ -27,7 +27,6 @@ async = require "async"
 zombie = require "zombie"
 browser = new zombie.Browser
 browser.setMaxListeners(100)
-browser.waitFor = 1000  # XXX: both too low and too high may fail
 # on every 'all events done', update globals from browser.window
 do ->
     global_keys = []
@@ -36,14 +35,11 @@ do ->
             global[key] = undefined
             delete global[key]
         global_keys = []
-        for own key of browser.window
+        for own key of browser.window when key != "console"
             global[key] = browser.window[key]
             global_keys.push key
 # perform serial processing of doctest examples
-async.series [
-    (async_callback) ->
-        browser.location = "%s"
-        do async_callback
+browser.visit "%s", -> browser.wait -> async.series [
 """ % url
             step_sep = ("-" * 80)
             step_start = u"""\
@@ -75,6 +71,13 @@ async.series [
                 print story
 
             coffee_bin = os.environ.get("COFFEE", "coffee")
+
+            # XXX: 2012-04-27: With node 0.6.15 and zombie.js 0.13.2.
+            # Without this "warm up", the first browser.wait always
+            # crashed with "RangeError: Maximum call stack size exceeded".
+            coffee = subprocess.Popen([coffee_bin, "-s"], shell=False,
+                stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+            out, err = coffee.communicate(beginning + end)
 
             coffee = subprocess.Popen([coffee_bin, "-s"], shell=False,
                 stdin=subprocess.PIPE, stdout=subprocess.PIPE)

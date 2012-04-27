@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-version = "1.0.1"
+version = "1.1.0"
 
 setup(name="collective.zombiedoctesting",
       version=version,
@@ -17,9 +17,14 @@ setup(name="collective.zombiedoctesting",
       author_email="asko.soukka@iki.fi",
       url="https://github.com/datakurre/collective.zombiedoctesting/",
       license="GPL",
-      packages=find_packages(exclude=["ez_setup"]),
+      packages=find_packages("src", exclude=["ez_setup"]),
+      package_dir={"": "src"},
       namespace_packages=["collective"],
       include_package_data=True,
       zip_safe=False,
-      install_requires=["setuptools"]
+      install_requires=["setuptools"],
+      extras_require={"test": [
+            "plone.app.testing",
+            "five.globalrequest"  # XXX: a missing dependency of TinyMCE
+            ]},
       )
