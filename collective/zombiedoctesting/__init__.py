@@ -27,6 +27,7 @@ async = require "async"
 zombie = require "zombie"
 browser = new zombie.Browser
 browser.setMaxListeners(100)
+browser.waitFor = 1000  # XXX: both too low and too high may fail
 # on every 'all events done', update globals from browser.window
 do ->
     global_keys = []
