@@ -80,6 +80,9 @@ async.series [
                 stdin=subprocess.PIPE, stdout=subprocess.PIPE)
             out, err = coffee.communicate(story)
 
+            if debug:
+                print out
+
             for example in test.examples:
                 try:
                     if step_sep in out:
