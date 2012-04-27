@@ -29,15 +29,15 @@ browser = new zombie.Browser
 browser.setMaxListeners(100)
 # on every 'all events done', update globals from browser.window
 do ->
-  global_keys = []
-  browser.on "done", (browser) ->
-      for own key in global_keys
-          global[key] = undefined
-          delete global[key]
-      global_keys = []
-      for own key of browser.window
-          global[key] = browser.window[key]
-          global_keys.push key
+    global_keys = []
+    browser.on "done", (browser) ->
+        for own key in global_keys
+            global[key] = undefined
+            delete global[key]
+        global_keys = []
+        for own key of browser.window
+            global[key] = browser.window[key]
+            global_keys.push key
 # perform serial processing of doctest examples
 async.series [
     (async_callback) ->
@@ -52,6 +52,8 @@ async.series [
 """ % step_sep
             step_end = u"do async_callback\n"
             end = u"""\
+    (async_callback) ->
+        do process.exit
 ]
 """
 
