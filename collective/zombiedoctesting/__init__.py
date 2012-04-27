@@ -1,7 +1,11 @@
 # -*- coding: utf-8 -*-
 """Zombie.js-doctesting decorator"""
+
+import os
+
 import doctest
 import subprocess
+
 
 def browser(url,
             options=doctest.NORMALIZE_WHITESPACE + doctest.ELLIPSIS,
@@ -67,7 +71,9 @@ async.series [
             if debug:
                 print story
 
-            coffee = subprocess.Popen(["coffee", "-s"], shell=False,
+            coffee_bin = os.environ.get("COFFEE", "coffee")
+
+            coffee = subprocess.Popen([coffee_bin, "-s"], shell=False,
                 stdin=subprocess.PIPE, stdout=subprocess.PIPE)
             out, err = coffee.communicate(story)
 
