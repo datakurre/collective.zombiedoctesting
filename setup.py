@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-version = "1.0"
+version = "1.0.1"
 
 setup(name="collective.zombiedoctesting",
       version=version,
@@ -21,7 +21,5 @@ setup(name="collective.zombiedoctesting",
       namespace_packages=["collective"],
       include_package_data=True,
       zip_safe=False,
-      install_requires=[
-          "setuptools",
-      ]
+      install_requires=["setuptools"]
       )
