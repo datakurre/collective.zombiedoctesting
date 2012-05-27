@@ -23,14 +23,12 @@ def browser(url,
                 func.__code__.co_firstlineno, func.__doc__)
 
             beginning = u"""\
-async = require "async"
-zombie = require "zombie"
-browser = new zombie.Browser
+browser = new (require "zombie")
 browser.setMaxListeners(100)
 # on every 'all events done', update globals from browser.window
 do ->
     global_keys = []
-    browser.on "done", (browser) ->
+    browser.on "done",  ->
         for own key in global_keys
             global[key] = undefined
             delete global[key]
@@ -38,14 +36,14 @@ do ->
         for own key of browser.window when key != "console"
             global[key] = browser.window[key]
             global_keys.push key
-# perform serial processing of doctest examples
-browser.visit "%s", -> browser.wait -> async.series [
+# open the url and perform serial processing of doctest examples
+browser.visit "%s", -> browser.wait -> require("async").series [
 """ % url
             step_sep = ("-" * 80)
             step_start = u"""\
     (async_callback) ->
         console.log "%s"
-        browser.wait (err, browser, status) ->
+        browser.wait ->
 """ % step_sep
             step_end = u"do async_callback\n"
             end = u"""\
@@ -72,14 +70,8 @@ browser.visit "%s", -> browser.wait -> async.series [
 
             coffee_bin = os.environ.get("COFFEE", "coffee")
 
-            # XXX: 2012-04-27: With node 0.6.15 and zombie.js 0.13.2.
-            # Without this "warm up", the first browser.wait always
-            # crashed with "RangeError: Maximum call stack size exceeded".
-            coffee = subprocess.Popen([coffee_bin, "-s"], shell=False,
-                stdin=subprocess.PIPE, stdout=subprocess.PIPE)
-            out, err = coffee.communicate(beginning + end)
-
-            coffee = subprocess.Popen([coffee_bin, "-s"], shell=False,
+            coffee = subprocess.Popen(
+                [coffee_bin, "-s", "--nodejs", "--stack_size=4096"], shell=False,
                 stdin=subprocess.PIPE, stdout=subprocess.PIPE)
             out, err = coffee.communicate(story)
 
